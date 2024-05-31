@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package productservice;
+
+// The product service definition.
+service ProductService {
+  // Sends a request to get the price of a product.
+  rpc GetProductPrice(ProductRequest) returns (ProductResponse);
+}
+
+// The request message containing the product ID.
+message ProductRequest {
+  int32 product_id = 1;
+}
+
+// The response message containing the product price.
+message ProductResponse {
+  double price = 1;
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package orderservice;
+
+// The order service definition.
+service OrderService {
+  // Sends a request to get the count of orders for a product.
+  rpc GetOrderCount(OrderRequest) returns (OrderResponse);
+}
+
+// The request message containing the product ID.
+message OrderRequest {
+  int32 product_id = 1;
+}
+
+// The response message containing the order count.
+message OrderResponse {
+  int32 order_count = 1;
+}

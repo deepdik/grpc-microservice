@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  db_product:
+    platform: linux/amd64
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: product_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./.mysql_data_product:/var/lib/mysql
+    restart: on-failure
+
+
+  db_order:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: order_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./.mysql_data_order:/var/lib/mysql
+
+    restart: on-failure
+
+
+  product:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+      - "50051:50051"
+    depends_on:
+      - db_product
+    volumes:
+      - ./product-service:/app
+    restart: on-failure
+
+
+  order:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+      - "50052:50052"
+    depends_on:
+      - db_order
+    volumes:
+      - ./order-service:/app
+    restart: on-failure
+
+
+
